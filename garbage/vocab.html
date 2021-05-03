@@ -1,0 +1,145 @@
+
+<meta charset="UTF-8">
+<html>
+   <head>
+      <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+      <script type = "text/javascript" src="vocab-game.js" ></script>
+      <style>
+         #max {
+            max-width: 1536px;
+            border: 1px solid black;
+         }
+         #thought {
+            background-image: url('thought.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top center;
+            height: 26vh;
+            padding-top: 4vh;           
+            text-align: center;
+         }
+         #thought button {
+            height: 14vh;
+            font-size: 24pt;
+         }
+         .animal {
+            width: 100vw;
+            height: 44vh;
+            background-image: url('edebird.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top center;
+         }
+         .marquee {
+            width: 100vw;
+            height: 400px;
+            margin: 0 auto;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            background-image: url('conv-belt.png');
+            background-position: 0 0;
+            background-repeat: repeat;
+            animation: marquee 10s linear infinite;
+
+         }
+         
+         @keyframes marquee {
+            from {
+               transform: translateX(0px);
+            }
+            to {
+            transform: translateX(-100vw);
+            }
+         }
+
+         #answerBox {
+            height: 28vh;
+         }
+
+         .hotdog {
+            height: 100%;
+            background-image: url('food3.png');
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            vertical-align: bottom;
+            text-align: center;
+            background-size: 14vh;
+         }
+         .pizza {
+            background-image: url('food6.png');
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            background-size: 18vh;
+            height: 100%;
+            background-color: aquamarine;
+            text-align: center;
+         }
+         .fries {
+            height: 100%;
+            background-image: url('food1.png');
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            vertical-align: bottom;
+            text-align: center;
+            background-size: 10vh;
+         }
+         .muffin {
+            height: 100%;
+            background-image: url('food2.png');
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            vertical-align: bottom;
+            text-align: center;
+            background-size: 14vh;
+         }
+         .wrap {
+            height: 100%;
+            background-image: url('food4.png');
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            vertical-align: bottom;
+            text-align: center;
+            background-size: 18vh;
+         }
+         .burger {
+            height: 100%;
+            background-image: url('food5.png');
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            vertical-align: bottom;
+            text-align: center;
+            background-size: 16vh;
+         }
+         #answerBox button {
+            
+            height: 100px;
+            font-size: 36pt;
+         }
+      </style>
+   </head>
+   
+   <body>
+      <div class="" id="max">
+         
+         <div class="w-100" id="thought"> 
+            <button class="b--dashed" id="susan" onclick="startGame()">Start game</button>
+         </div>
+         <div class="w-100 animal">
+
+
+
+            
+         </div>
+      </div>
+      <div class="">
+         <div id="answerBox" class="w-100 flex flex-column flex-row-ns">
+            <div class="fries">
+               <button class="v-btm">Hi</button>
+            </div>
+
+      </div>
+    
+   </div>
+   </body>
+</html>

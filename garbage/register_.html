@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <head>
+        <title>Vue Tutorial</title>
+
+    </head>
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css" />
+
+    <body class="vh-100 dt w-100 error-bg"></body>
+
+    <body class="vh-100 dt w-100"></body>
+
+
+
+        <div class="ma6 pa6" id="app">
+            
+        <form class="measure center" action="/register" method="POST">
+           
+                <h2>Student Register</h2>
+              <label 
+                class="db fw6 lh-copy f6 mv2" 
+                for="koreanName">이름</label>
+                <p v-if="isHangul(koreanName, koreanName.length) == false"> Write your name in hangul</p>
+                <input 
+              class="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                type="text" 
+                v-model="koreanName"
+                required
+                />
+    
+                <label 
+                class="db fw6 lh-copy f6 mv2" 
+                for="englishName">영어 이름</label>
+                <p v-if="isHangul(englishName, englishName.length)"> No hangul please</p>
+                <p v-if="invalidEnglishName(englishName)"> {{ error }} </p>
+                <input 
+                    class="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                    type="text" 
+                    v-model="englishName"
+                    required
+                />
+                <label 
+                    class="db fw6 lh-copy f6 mv2" 
+                    for="username">아이디</label>
+                <input 
+                    class="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    required />
+                <label 
+                    class="db fw6 lh-copy f6 mv2"
+                    for="classId">반 번호</label>
+                    <p v-if="isNumber == false">Only numbers, thanks</p>
+                <input 
+                    class="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                    type="text" 
+                    id="classId" 
+                    name="classId" 
+                    required />
+        
+          </form> 
+        </div>
+        
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+        <script type="application/javascript" src="oeuo.js">
+        
+        
+        
+        </script>
+    </body>
+    
+
+</html>
+

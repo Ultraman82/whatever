@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <favico
+    <title>Snake</title>
+
+    <style>
+        body {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            background-color: black;
+            
+        }
+
+        #game-board {
+            background-color:azure; 
+            width: 90vmin;
+            height: 90vmin;
+            display: grid;
+            grid-template-rows: repeat(21, 1fr);
+            grid-template-columns: repeat(21, 1fr);
+        }
+
+        .snake {
+            background-color: darkslateblue;
+            border: .25vmin solid black;
+        }
+
+        .food {
+            background-color: darksalmon;
+            border: .25vmin solid black;
+            text-anchor: middle;
+            text-align: center;
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <div id="game-board">
+
+    </div>
+    
+</body>
+
+<script type="text/javascript" defer>
+    let lastRenderTime = 0
+    let inputDirection = { x: 0, y: 0 }
+    let lastInputDirection = { x: 0, y: 0 }
+
+    const SNAKE_SPEED = 5
+    const snakeBody = [
+        { x: 11, y: 11 },
+        { x: 10, y: 11 },
+        { x: 9, y: 11 },
+    ]
+
+
+    window.addEventListener('keydown', e => {
+        switch (e.key) {
+            case 'ArrowUp' : 
+                if (lastInputDirection.y !== 0 ) break
+                inputDirection = { x: 0, y: -1 }
+                break
+            case 'ArrowDown' :
+            if (lastInputDirection.y !== 0 ) break
+                inputDirection = { x: 0, y: 1 }
+                break
+            case 'ArrowRight' :
+            if (lastInputDirection.x !== 0 ) break
+                inputDirection = { x: 1, y: 0 }
+                break
+            case 'ArrowLeft' :
+            if (lastInputDirection.x !== 0 ) break
+                inputDirection = { x: -1, y: 0 }
+                break
+        }
+    })
+    function getInputDirection() {
+        lastInputDirection = inputDirection
+        return inputDirection
+    }
+    const gameBoard = document.getElementById('game-board')
+    function main(currentTime) {
+        window.requestAnimationFrame(main) //requesting frame to animate game
+
+        const secondsSinceLastRender = (currentTime - lastRenderTime) / 1000
+
+        if (secondsSinceLastRender < 1 / SNAKE_SPEED) return
+        lastRenderTime = currentTime
+
+        update()
+        draw(gameBoard)
+        wordDraw(gameBoard)
+        wordUpdate()
+
+    }
+    window.requestAnimationFrame(main)
+    function update() {
+        const inputDirection = getInputDirection()
+        if (snakeBody[0].y < 1) {
+            snakeBody[0].y = 21;
+        }
+        if (snakeBody[0].x < 1) {
+            snakeBody[0].x = 21;
+        }
+        if (snakeBody[0].y > 21) return snakeBody[0].y = 1
+        if (snakeBody[0].x > 21) return snakeBody[0].x = 1
+        for (let i = snakeBody.length - 2; i >= 0; i--) {
+            snakeBody[i + 1] = { ...snakeBody[i] }
+        }
+
+        snakeBody[0].x += inputDirection.x
+        snakeBody[0].y += inputDirection.y
+    }
+    function draw(gameBoard) {
+        gameBoard.innerHTML = ''
+        snakeBody.forEach(segment => {
+            const snakeElement = document.createElement('div')
+            snakeElement.style.gridRowStart = segment.y
+            snakeElement.style.gridColumnStart = segment.x
+            snakeElement.classList.add('snake')
+            gameBoard.appendChild(snakeElement) 
+        }) 
+    }
+   
+
+
+    let wordList = ['pop', 'pop', 'pop', 'pop', 'pop', 'pop', 'love', 'mama']
+    var index = { 
+        'currentWord' : 0, 
+        'currentLetter' : 0,
+        'touchedLetter' : Number(),
+        'touchedDiv' : Number()
+    }
+    let TEMP = Number()
+    let wordLocationArray = []
+    let currentLetterIndex = 0
+    let touchedIndex = Number() 
+    var x, y;
+
+    let array = []
+
+    
+    function wordUpdate() {
+        touchedIndex = isTouchingSnake()
+        
+        if (touchedIndex === 0) {
+            //wordLocationArray.shift()
+            removeCorrectWordFromGameBoard(array[0].index)
+        }
+        else if ( touchedIndex > 0 ) {
+            //not array[0]. find the same letter            
+
+            if (array[touchedIndex].letter === array[0].letter) {
+                array[touchedIndex].div.id = array[0].index
+                var obj = {}
+                obj.x = array[0].x
+                obj.y = array[0].y
+                //obj.index = touchedIndex
+                obj.letter = array[0].letter
+                obj.div = array[0].div
+                obj.div.id = touchedIndex
+                array.splice(touchedIndex, 1, obj)
+                //let isDivUndefined = document.getElementById('gameboard')
+                removeCorrectWordFromGameBoard(array[0].index)
+            }
+            console.log('wrong. YOU DIE')
+        }
+   }
+
+   function removeCorrectWordFromGameBoard(id) {
+        var trash = array.shift()
+        if (array.length === 0) {
+           return console.log('WOW YOU FINISHED. Play again?')
+        } else
+            console.log('i dont know')
+    }
+
+   function expandSnake(amount) {
+       newSegments += amount
+   }
+
+   function isTouchingSnake() { //onSnake
+    return array.findIndex((segment) => segment.x === snakeBody[0].x && segment.y === snakeBody[0].y
+    )
+   }
+
+   function wordDraw(gameBoard) {
+       if (array.length < 1) return createWordObject()
+       array.forEach(obj => {
+            gameBoard.appendChild(obj.div)
+        }) 
+   }
+
+//good
+   function createWordObject() {
+       if (wordList.length === 0) return
+       let currentWord = wordList.shift()
+       
+       for (let i = 0; i < currentWord.length; i++) {
+            let obj = {}
+            var div = document.createElement('div')
+            
+            //div.id = i
+            obj.letter = currentWord[i]
+            var location = randomizeWordPlacement()
+            div.classList.add('food')
+            div.innerHTML = currentWord[i]
+            div.style.gridRowStart = location[0]
+            div.style.gridColumnStart = location[1]
+            div.id = i
+            obj.x = location[1]
+            obj.y = location[0]
+            obj.index = i
+            obj.div = div
+            gameBoard.appendChild(div)
+            console.log(div)
+            //wordLocationArray.push( [x, y] )
+            array.push(obj)
+        }
+    }
+
+    function randomizeWordPlacement(obj) {
+        let x = Math.floor(Math.random() * 21) + 1
+        let y = Math.floor(Math.random() * 21) + 1
+
+        var found = array.some((obj) => obj.x === x && obj.y === y)
+        if (found === true) {
+            return randomizeWordPlacement()
+        }
+        return [x, y]
+    }
+    function isSameLetter(word) {
+
+    }
+</script>
+</html>

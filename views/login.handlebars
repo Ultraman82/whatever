@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css" />
+<link rel="stylesheet" href="/css.css" />
+
+
+<style>
+</style>
+
+{{#if messages.error}}
+
+    <body class="vh-100 dt w-100 error-bg">
+{{else}}
+
+    <body class="vh-100 dt w-100">
+{{/if}}
+<div class="borderwith ma6 pa6">
+    <form action="/login" method="POST" class="center w-40 pa2">
+        {{#if messages.error}}
+            <h1 class="alert alert-danger">{{messages.error}}</h1>
+        {{else}}
+            <h1 class="sans-serif f2 f1-m f-headline-s measure-narrow lh-title mv0">Student Login</h1>
+
+        {{/if}}
+        <label for="username" class="db fw4 lh-copy f6">아이디</label>
+        <input type="text" id="username" name="username" class="" required>
+
+        <label for="password" class="db fw4 lh-copy f6">비밀번호</label>
+        <input type="password" id="password" name="password" class="" required>
+
+        <button type="submit" class=""> Submit </button>
+        <br />
+
+        <a href="/register">Register</a>
+    </form>
+</div>
+</body>

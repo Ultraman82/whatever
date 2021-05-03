@@ -1,0 +1,65 @@
+<meta charset="UTF-8">
+<html>
+
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css" />
+        <link rel="stylesheet" href="/css.css" />
+
+
+        {{!-- <script type="text/javascript" src="vocab-game.js"></script> --}}
+    </head>
+
+    <body>
+        <div class="">
+            <div id="answerBox" class="w-100 flex flex-column flex-row-ns">
+                {{#if message}}
+                    <h2 class="warning">{{message}}</h2>
+                {{/if}}
+
+            </div>
+            <table>
+                <tr>
+                    <th>English </th>
+                    <th>Korean</th>
+                    <th>Level</th>
+                    <th>Parts of Speech</th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <form action="/addvocab" method="POST">
+
+                        <td>
+                            <input type="text" id="english" name="english" placeholder="English" required />
+                        </td>
+                        <td>
+                            <input type="text" id="korean" name="korean" placeholder="Korean" required />
+                        </td>
+                        <td>
+                            <input type="text" id="level" name="level" placeholder="level" required />
+                        </td>
+                        <td>
+                            <input type="text" id="pos" name="pos" placeholder="parts of speech" required />
+                        </td>
+                        <td>
+                            <button type="submit">Submit</button>
+                        </td>
+                    </form>
+
+                </tr>
+                {{#if wordlist }}
+                    {{#each wordlist}}
+                        <tr>
+                            <td>{{this.english}}</td>
+                            <td>{{this.korean}}</td>
+                            <td>{{this.level}}</td>
+                            <td>{{this.pos}}</td>
+                            <td><button>delete</button></td>
+                        </tr>
+                    {{/each}}
+                {{/if}}
+            </table>
+
+        </div>
+    </body>
+
+</html>

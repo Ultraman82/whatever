@@ -1,0 +1,76 @@
+.input-reset {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.button-reset::-moz-focus-inner,
+.input-reset::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+body {
+  background: #f2e8dc url("/images/tijana-pattern.png") repeat top left;
+}
+
+div {
+  background-color: #f0eceb;
+  border-radius: 4px;
+}
+.borderwith {
+  border: 1px solid #e1d8d1;
+  box-shadow: 0 3px #c4ac90;
+}
+input {
+  background-color: #dee4c8;
+  border: 2px solid #dee4c8;
+  border-radius: 4px;
+  padding: 0.5em;
+}
+label {
+  margin: 0.25em;
+  margin-left: 0;
+}
+input:hover,
+input:focus {
+  background-color: #e6ded3;
+  border-color: #e6ded3;
+}
+button {
+  border: 2px solid #f4ab3a;
+  border-radius: 4px;
+  background-color: #f4ab3a;
+  padding: 0.5em;
+  margin: 0.25em;
+  margin-left: 0;
+}
+
+button:hover {
+  border-color: #dcaa39;
+  background-color: #dcaa39;
+}
+
+button:nth-of-type(2n) {
+  border-color: #ed7a4d;
+  background-color: #ed7a4d;
+}
+button:hover:nth-of-type(2n) {
+  border-color: #dcaa39;
+  background-color: #dcaa39;
+}
+
+a {
+  color: #42663a;
+}
+a:visited {
+  color: #2c6544;
+}
+
+.bg-bar {
+  background-color: #1f3e39;
+}
+
+td,
+th {
+  padding-left: 0.25em;
+}

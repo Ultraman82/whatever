@@ -1,0 +1,29 @@
+<html>
+
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+
+    </head>
+    <body></body>
+    <body class="vh-100 dt w-100 error-bg"></body>
+
+    <!-- <body class="vh-100 dt w-100"></body> -->
+
+    <div class="ma6 pa6"></div>
+    <form action="/login" method="POST" class="center w-40 pa2 bg-white">
+        <h1 class="alert alert-danger">{{messages.error}}</h1>
+        <h1 class="sans-serif f2 f1-m f-headline-s measure-narrow lh-title mv0">Student Login</h1>
+        <div>
+            <label for="username" class="db fw4 lh-copy f6">아이디</label>
+            <input type="text" id="username" name="username" class="b pa2 input-reset ba bg-transparent" required>
+
+            <label for="password" class="db fw4 lh-copy f6">비밀번호</label>
+            <input type="password" id="password" name="password" class="b pa2 input-reset ba bg-transparent" required>
+        </div>
+        <button type="submit" class="ph0 mh0 fw6">
+            Submit
+        </button>
+        <a href="/register">Register</a>
+    </form>
+</html></body></html>
