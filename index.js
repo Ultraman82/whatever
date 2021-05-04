@@ -81,7 +81,49 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
+app.post("/add_student", async (req, res) => {
+  try {
+    // console.log("success")
+    const client = await pool.getConnection();
+    console.log(req.body)
+    
+    let username = req.body.username
+    let password = req.body.password        
 
+    // return conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"])
+    res = await client.query(
+      "INSERT INTO student (username, password) VALUES (?, ?)",
+      [username, password]
+    );
+    console.log(res)
+    client.end();   
+    res.render('vocabulator');
+  } catch (err) {
+    console.log(err)
+    res.send(err);
+  }
+});
+
+app.post("/add_vocab", async (req, res) => {
+  try {
+    // console.log("success")
+    const client = await pool.getConnection();
+    console.log(req.body)
+    
+    let eng = req.body.eng
+    let kor = req.body.kor        
+
+    // return conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"])
+    res = await client.query(
+      "INSERT INTO vocab (eng, kor) VALUES (?, ?)",
+      [eng, kor]
+    );
+    console.log(res)
+  } catch (err) {
+    console.log(err)
+    res.send(err);
+  }
+});
 
 
 app.post("/addlist_test", async (req, res) => {
@@ -104,7 +146,6 @@ app.post("/addlist_test", async (req, res) => {
     res.send(err);
   }
 });
-
 
 
 app.post("/register", async (req, res) => {
@@ -195,6 +236,8 @@ app.get("/addvocab_list", async (req, res) => {
     res.render("vocabulator", { err });
   }
 });
+
+
 
 // router.get("/addvocab", missonControl);
 app.get("/vocab", async (req, res) => {
