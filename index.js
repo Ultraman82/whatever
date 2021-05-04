@@ -124,21 +124,31 @@ app.post("/add_vocab", async (req, res) => {
     res.send(err);
   }
 });
+const jsdate2mysqldate = () => {
+  let date = new Date();
+  date = date.getUTCFullYear() + '-' +
+      ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
+      ('00' + date.getUTCDate()).slice(-2) + ' ' + 
+      ('00' + date.getUTCHours()).slice(-2) + ':' + 
+      ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
+      ('00' + date.getUTCSeconds()).slice(-2);
+  console.log(date);
+  return date  
+}
 
-
-app.post("/addlist_test", async (req, res) => {
+app.post("/add_vocablist", async (req, res) => {
   try {
     // console.log("success")
     const client = await pool.getConnection();
-    console.log(req.body)
-    let date = new Date()
+    let date = jsdate2mysqldate();    
     let student_id = req.body.student_id
     let word_id = req.body.word_id
     let box = req.body.box
+    let ox = req.body.ox
 
     res = await client.query(
-      "INSERT INTO student (encounter, student_id, word_id, box) VALUES ($1, $2, $3, $4)",
-      [date, student_id, word_id, box]
+      "INSERT INTO vocablist (date, student_id, word_id, box, ox) VALUES (?, ?, ?, ?, ?)",
+      [date, student_id, word_id, box, ox]
     );
     console.log(res)
   } catch (err) {
