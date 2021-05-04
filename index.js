@@ -81,16 +81,35 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
+
+Date.prototype.addDays = function(days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+}
+
+Date.prototype.addDays = function(days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+}
+
+const jsdate2mysqldate = (days) => {
+  let date = new Date().addDays(days);    
+  date = date.getUTCFullYear() + '-' +
+      ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
+      ('00' + date.getUTCDate()).slice(-2)
+  console.log(date);
+  return date  
+}
+
 app.post("/add_student", async (req, res) => {
-  try {
-    // console.log("success")
+  try {    
     const client = await pool.getConnection();
     console.log(req.body)
     
     let username = req.body.username
-    let password = req.body.password        
-
-    // return conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"])
+    let password = req.body.password            
     res = await client.query(
       "INSERT INTO student (username, password) VALUES (?, ?)",
       [username, password]
@@ -105,15 +124,11 @@ app.post("/add_student", async (req, res) => {
 });
 
 app.post("/add_vocab", async (req, res) => {
-  try {
-    // console.log("success")
+  try {    
     const client = await pool.getConnection();
-    console.log(req.body)
-    
     let eng = req.body.eng
-    let kor = req.body.kor        
+    let kor = req.body.kor  
 
-    // return conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"])
     res = await client.query(
       "INSERT INTO vocab (eng, kor) VALUES (?, ?)",
       [eng, kor]
@@ -124,23 +139,12 @@ app.post("/add_vocab", async (req, res) => {
     res.send(err);
   }
 });
-const jsdate2mysqldate = () => {
-  let date = new Date();
-  date = date.getUTCFullYear() + '-' +
-      ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
-      ('00' + date.getUTCDate()).slice(-2) + ' ' + 
-      ('00' + date.getUTCHours()).slice(-2) + ':' + 
-      ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
-      ('00' + date.getUTCSeconds()).slice(-2);
-  console.log(date);
-  return date  
-}
 
 app.post("/add_vocablist", async (req, res) => {
   try {
     // console.log("success")
     const client = await pool.getConnection();
-    let date = jsdate2mysqldate();    
+    let date = jsdate2mysqldate(req.body.days_later);    
     let student_id = req.body.student_id
     let word_id = req.body.word_id
     let box = req.body.box
