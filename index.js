@@ -161,6 +161,25 @@ app.post("/add_vocablist", async (req, res) => {
   }
 });
 
+// getting vocab list of most recent encounte date words limited by num_words
+app.get("/get_vocablist", async (req, res) => {
+  try {    
+    const client = await pool.getConnection();    
+    
+    let student_id = req.body.student_id
+    let num_words = req.body.num_words
+    res = await client.query(
+      "SELECT * FROM vocablist WHERE student_id = ? ORDER BY date ASC LIMIT ?",
+      [student_id, num_words]
+    );
+    console.log(res)
+    client.end();       
+  } catch (err) {
+    console.log(err)
+    res.send(err);
+  }
+});
+
 
 app.post("/register", async (req, res) => {
   try {
