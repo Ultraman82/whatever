@@ -5,6 +5,9 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
 
+// app.use(express.cookieParser('secret'));
+// app.use(express.cookieSession());
+
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const session = require("express-session");
@@ -48,7 +51,8 @@ app.set("view engine", "handlebars");
 app.use(flash());
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    // secret: process.env.SESSION_SECRET,
+    secret: "sdgdsggds",
     resave: false,
     saveUninitialized: false,
   })
@@ -168,10 +172,12 @@ app.get("/get_vocablist", async (req, res) => {
     
     let student_id = req.body.student_id
     let num_words = req.body.num_words
-    res = await client.query(
-      "SELECT * FROM vocablist WHERE student_id = ? ORDER BY date ASC LIMIT ?",
+    res = await client.query(      
+      "SELECT * FROM vocablist LEFT JOIN vocab ON vocablist.word_id = vocab.id  WHERE student_id = ? ORDER BY date DESC LIMIT ?",
       [student_id, num_words]
     );
+    // example of changing buffer to string
+    // console.log(res[0].kor.toString())
     console.log(res)
     client.end();       
   } catch (err) {
@@ -407,9 +413,14 @@ function processMultipleChoice(wordList, numberOfOptions) {
 
 // }
 
-function refineVocablist(req, res, next) {
-  
-}
+
+// SELECT * FROM vocablist WHERE student_id = 1 ORDER BY date DESC LIMIT 3 inner join 
+
+// SELECT * FROM vocablist WHERE student_id = 1 ORDER BY date DESC LIMIT 3
+// SELECT * FROM vocablist
+// LEFT JOIN vocab ON vocablist.word_id=vocab.id
+// WHERE student_id = 1 ORDER BY date DESC LIMIT 3;
+
 
 app.listen(3000);
 
