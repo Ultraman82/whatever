@@ -5,6 +5,9 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
 
+// app.use(express.cookieParser('secret'));
+// app.use(express.cookieSession());
+
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const session = require("express-session");
@@ -49,7 +52,11 @@ app.use(flash());
 app.use(
   session({
     // secret: process.env.SESSION_SECRET,
+<<<<<<< HEAD
     secret: "test",
+=======
+    secret: "sdgdsggds",
+>>>>>>> a3de61bffb9a43a7a5ac0ea659c3c115219b7e10
     resave: false,
     saveUninitialized: false,
   })
@@ -456,9 +463,14 @@ function processMultipleChoice(wordList, numberOfOptions) {
 
 // }
 
-function refineVocablist(req, res, next) {
-  
-}
+
+// SELECT * FROM vocablist WHERE student_id = 1 ORDER BY date DESC LIMIT 3 inner join 
+
+// SELECT * FROM vocablist WHERE student_id = 1 ORDER BY date DESC LIMIT 3
+// SELECT * FROM vocablist
+// LEFT JOIN vocab ON vocablist.word_id=vocab.id
+// WHERE student_id = 1 ORDER BY date DESC LIMIT 3;
+
 
 app.listen(3000);
 
