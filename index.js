@@ -48,7 +48,8 @@ app.set("view engine", "handlebars");
 app.use(flash());
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    // secret: process.env.SESSION_SECRET,
+    secret: "test",
     resave: false,
     saveUninitialized: false,
   })
@@ -88,18 +89,12 @@ Date.prototype.addDays = function(days) {
   return date;
 }
 
-Date.prototype.addDays = function(days) {
-  var date = new Date(this.valueOf());
-  date.setDate(date.getDate() + days);
-  return date;
-}
-
 const jsdate2mysqldate = (days) => {
   let date = new Date().addDays(days);    
   date = date.getUTCFullYear() + '-' +
       ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
       ('00' + date.getUTCDate()).slice(-2)
-  console.log(date);
+  // console.log(date);
   return date  
 }
 
@@ -169,10 +164,64 @@ app.get("/get_vocablist", async (req, res) => {
     let student_id = req.body.student_id
     let num_words = req.body.num_words
     res = await client.query(
-      "SELECT * FROM vocablist WHERE student_id = ? ORDER BY date ASC LIMIT ?",
+      "SELECT * FROM vocablist LEFT JOIN vocab ON vocablist.word_id = vocab.id  WHERE student_id = ? ORDER BY date DESC LIMIT ?",
       [student_id, num_words]
     );
+    // console.log(res[0].kor.toString())
     console.log(res)
+    client.end();       
+  } catch (err) {
+    console.log(err)
+    res.send(err);
+  }
+});
+
+
+app.get("/get_vocabtest_real", async (req, res) => {
+  try {    
+    const client = await pool.getConnection();    
+    
+    let student_id = req.body.student_id
+    let num_old_words = req.body.num_old_words
+    let num_new_words = req.body.num_new_words    
+    let today = jsdate2mysqldate(0)
+    
+    res1 = await client.query(
+      "select MAX(word_id) from vocablist where student_id = ?",
+      [student_id]
+    )
+    .then(result => {      
+      return Object.values(result[0])[0]      
+    })
+    let last_word_id = res1  
+    let values = [
+      [student_id, 7, today, 10],
+      [student_id, 1, today, 10]
+    ]
+    let values2 = [
+      [1, 22],
+      [1, 23]
+    ]
+
+    // example of multiple INSERT
+    res2 = await client.batch(
+      "INSERT INTO vocablist(student_id, word_id, date, box) VALUES (?, ?, ?, ?)",
+      values
+    ).then(result2 => {
+      console.log(result2)
+    })      
+
+    // example of multiple UPDATE multiple COLUMNS
+    res3 = await client.batch(
+      "UPDATE vocablist SET ox = ?, box = 11 WHERE list_id = ?",
+      values2
+    ).then(result3 => {
+      console.log(result3)
+    })          
+    // "select * from vocab where id >= ? LIMIT ?",
+    // select MAX(word_id) from vocablist where student_id = 3
+    // "SELECT * FROM vocablist LEFT JOIN vocab ON vocablist.word_id = vocab.id  WHERE student_id = ? ORDER BY date DESC LIMIT ?",
+
     client.end();       
   } catch (err) {
     console.log(err)
