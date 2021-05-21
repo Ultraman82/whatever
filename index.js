@@ -247,6 +247,7 @@ let mockup_test_result = [
 app.post("/update_test_result", async (req, res) => {
   try {    
     const client = await pool.getConnection();    
+
     let update_list = mockup_test_result.map(item => {      
       let box_updated = item.box + item.correct;
       let next_date = jsdate2mysqldate(Math.pow(3, box_updated))

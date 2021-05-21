@@ -11,20 +11,21 @@ const pool = require("./sel-rec");
 function initialize(passport, getUserByEmail, getUserById) {
   const authenticateUser = async (username, password, done) => {
     const user = await pool.query(
-      "SELECT username, password, wallet FROM student WHERE username = $1",
+      "SELECT username, password, wallet FROM student WHERE username = ?",
       [username]
     );
 
     try {
-      console.log(username);
-      console.log(user);
+      // console.log(username);
+      // console.log(password)
+      // let password = user[0].password.toString();
       //console.log(user.rows[0].username != username);
-      if (user.rows.length === 0) {
+      if (!username) {
         console.log("username nooooo");
         return done(null, false, { message: "No user with that username" });
       }
 
-      if (await bcrypt.compare(password, user.rows[0].password)) {
+      if (await bcrypt.compare(password, user[0].password.toString())) {
        
         return done(null, user);
       } else {
