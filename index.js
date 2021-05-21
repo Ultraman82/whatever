@@ -52,11 +52,7 @@ app.use(flash());
 app.use(
   session({
     // secret: process.env.SESSION_SECRET,
-<<<<<<< HEAD
     secret: "test",
-=======
-    secret: "sdgdsggds",
->>>>>>> a3de61bffb9a43a7a5ac0ea659c3c115219b7e10
     resave: false,
     saveUninitialized: false,
   })
@@ -189,7 +185,7 @@ app.get("/get_vocabtest_real", async (req, res) => {
     const client = await pool.getConnection();    
     
     let student_id = req.body.student_id
-    let num_old_words = req.body.num_old_words
+    let num_total_words = req.body.num_total_words
     let num_new_words = req.body.num_new_words    
     let today = jsdate2mysqldate(0)
     
@@ -199,35 +195,28 @@ app.get("/get_vocabtest_real", async (req, res) => {
     )
     .then(result => {      
       return Object.values(result[0])[0]      
-    })
-    let last_word_id = res1  
-    let values = [
-      [student_id, 7, today, 10],
-      [student_id, 1, today, 10]
-    ]
-    let values2 = [
-      [1, 22],
-      [1, 23]
-    ]
+    })    
+
+    let new_words = []    
+    for (word_id = res1; num_new_words > 0; num_new_words--) {
+      word_id++;
+      new_words.push([student_id, word_id, today, 0])      
+    }        
 
     // example of multiple INSERT
     res2 = await client.batch(
       "INSERT INTO vocablist(student_id, word_id, date, box) VALUES (?, ?, ?, ?)",
-      values
-    ).then(result2 => {
-      console.log(result2)
+      new_words
+    ).then(result => {
+      console.log(result)
+    })   
+       
+    res3 = await client.query(
+      "SELECT * FROM vocablist LEFT JOIN vocab ON vocablist.word_id = vocab.id  WHERE student_id = ? ORDER BY date DESC LIMIT ?",
+      [student_id, num_total_words]
+    ).then(result => {
+      console.log(result)
     })      
-
-    // example of multiple UPDATE multiple COLUMNS
-    res3 = await client.batch(
-      "UPDATE vocablist SET ox = ?, box = 11 WHERE list_id = ?",
-      values2
-    ).then(result3 => {
-      console.log(result3)
-    })          
-    // "select * from vocab where id >= ? LIMIT ?",
-    // select MAX(word_id) from vocablist where student_id = 3
-    // "SELECT * FROM vocablist LEFT JOIN vocab ON vocablist.word_id = vocab.id  WHERE student_id = ? ORDER BY date DESC LIMIT ?",
 
     client.end();       
   } catch (err) {
@@ -235,6 +224,48 @@ app.get("/get_vocabtest_real", async (req, res) => {
     res.send(err);
   }
 });
+
+
+let mockup_test_result = [
+  {
+    list_id: 31,
+    correct: 1,
+    box: 0
+  },
+  {
+    list_id: 32,
+    correct: 1,
+    box: 1
+  },
+  {
+    list_id: 33,
+    correct: 0,
+    box: 3
+  },
+]
+// updating test result with mock up data above
+app.post("/update_test_result", async (req, res) => {
+  try {    
+    const client = await pool.getConnection();    
+    let update_list = mockup_test_result.map(item => {      
+      let box_updated = item.box + item.correct;
+      let next_date = jsdate2mysqldate(Math.pow(3, box_updated))
+      return [box_updated, next_date, item.list_id]
+    })
+    res = await client.batch(
+      "UPDATE vocablist SET box = ?, date = ? WHERE list_id = ?",
+      update_list
+    ).then(result => {
+      console.log(result)
+    })    
+
+    client.end();       
+  } catch (err) {
+    console.log(err)
+    res.send(err);
+  }
+});
+
 
 
 app.post("/register", async (req, res) => {
