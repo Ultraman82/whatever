@@ -10,22 +10,20 @@ const pool = require("./sel-rec");
 
 function initialize(passport, getUserByEmail, getUserById) {
   const authenticateUser = async (username, password, done) => {
-    const user = await pool.query(
+    const userCash = await pool.query(
       "SELECT username, password, wallet FROM student WHERE username = ?",
       [username]
     );
 
+    user = userCash[0]
+
     try {
-      // console.log(username);
-      // console.log(password)
-      // let password = user[0].password.toString();
-      //console.log(user.rows[0].username != username);
-      if (!username) {
+      if (!user.username) {
         console.log("username nooooo");
         return done(null, false, { message: "No user with that username" });
       }
 
-      if (await bcrypt.compare(password, user[0].password.toString())) {
+      if (await bcrypt.compare(password, user.password.toString())) {
        
         return done(null, user);
       } else {
@@ -40,7 +38,7 @@ function initialize(passport, getUserByEmail, getUserById) {
 
   passport.use(new LocalStrategy(authenticateUser));
 
-  passport.serializeUser(function (user, done) {
+  passport.serializeUser(function (user, done) {    
     done(null, user);
   });
 

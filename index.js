@@ -164,14 +164,16 @@ app.get("/get_vocablist", async (req, res) => {
   try {    
     const client = await pool.getConnection();    
     
-    let student_id = req.body.student_id
-    let num_words = req.body.num_words
-    res = await client.query(
+    // let student_id = req.body.student_id
+    // let num_words = req.body.num_words
+    let student_id = 3
+    let num_words = 5
+    data = await client.query(
       "SELECT * FROM vocablist LEFT JOIN vocab ON vocablist.word_id = vocab.id  WHERE student_id = ? ORDER BY date DESC LIMIT ?",
       [student_id, num_words]
-    );
-    // console.log(res[0].kor.toString())
-    console.log(res)
+    )
+    console.log(data)
+    res.render('vocab_test', { data });   
     client.end();       
   } catch (err) {
     console.log(err)
