@@ -171,9 +171,14 @@ app.get("/get_vocablist", async (req, res) => {
     data = await client.query(
       "SELECT * FROM vocablist LEFT JOIN vocab ON vocablist.word_id = vocab.id  WHERE student_id = ? ORDER BY date DESC LIMIT ?",
       [student_id, num_words]
-    )
-    console.log(data)
-    res.render('vocab_test', { data });   
+    )    
+    wordlist = data.map(element => { 
+      element.eng = element.eng.toString()
+      element.kor = element.kor.toString()
+      return element
+    })
+    
+    res.render('vocabulator', { wordlist });   
     client.end();       
   } catch (err) {
     console.log(err)
